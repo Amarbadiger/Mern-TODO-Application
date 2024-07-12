@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -5,11 +6,25 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Add logic here to handle authentication or further actions
+    try {
+      const res = await fetch("http://localhost:5000/api/vi/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        message.success(data.message);
+      } else {
+        message.error(data.message);
+      }
+    } catch (error) {
+      message.error("Something went Wrong Please Try again later");
+    }
   };
 
   return (
