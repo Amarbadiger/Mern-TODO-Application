@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const { connectDB } = require("./database/connectdb");
 const cors = require("cors");
+const morgan = require("morgan");
 //Load Environment Variabls from .env file
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 connectDB();
 
 app.use(express.json());
+app.use(morgan("dev"));
 
 app.use("/api/vi/user", require("./Routes/userRoutes"));
 
