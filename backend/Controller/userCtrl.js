@@ -92,11 +92,12 @@ const loginController = async (req, res) => {
 const authController = async (req, res) => {
   try {
     const user = await userModel.findOne({ _id: req.body.userId });
+    user.password = undefined;
     if (!user) {
-      res.status(500).send({
-        message: "User not Found",
-        success: false,
-      });
+      console.log("User not found in database");
+      return res
+        .status(200)
+        .send({ message: "User not found", success: false });
     } else {
       res.status(200).send({
         success: true,
@@ -104,10 +105,12 @@ const authController = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: "Auth Error", success: false });
+    console.log("Error in authController:", error);
+    res.status(500).send({ message: "Auth error", success: false });
   }
 };
+
+module.exports = authController;
 
 module.exports = {
   helloController,

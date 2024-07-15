@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 
 const Dashboard = () => {
-  const getUser = async () => {
+  // Login User Data
+  const getUserData = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/vi/user/getUserdata", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
+        body: JSON.stringify({}),
       });
 
       if (!res.ok) {
@@ -16,17 +18,17 @@ const Dashboard = () => {
       }
 
       const data = await res.json();
-      console.log(data);
+      console.log(data); // Process the data as needed
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    getUser();
+    getUserData();
   }, []);
 
-  return <div>Dashboard</div>;
+  return <div>dashboard</div>;
 };
 
 export default Dashboard;
