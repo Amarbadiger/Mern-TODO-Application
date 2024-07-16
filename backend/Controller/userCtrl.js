@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dataModel = require("../models/DataModel");
 const helloController = async (req, res) => {
   res.send("Hello world");
 };
@@ -110,6 +111,40 @@ const authController = async (req, res) => {
   }
 };
 
+//Get user Data as input and store it mongoDB
+
+const getInputData = async (req, res) => {
+  const { user, inputTime, inputText } = req.body;
+  try {
+    const id = user._id;
+
+    // Correctly extract user id
+    const User = await userModel.findOne({ _id: id }); // Correctly find user by _id
+
+    if (!User) {
+      return res.status(404).send({
+        message: "User Not Found",
+        success: false, // Should be false as user is not found
+      });
+    }
+
+    // Save the input data if user is found
+    const userData = new dataModel({ id, inputTime, inputText });
+    await userData.save();
+
+    res.status(200).send({
+      message: "Data saved successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({
+      message: "Error while fetching user data",
+      success: false,
+    });
+  }
+};
+
 module.exports = authController;
 
 module.exports = {
@@ -117,4 +152,5 @@ module.exports = {
   registerController,
   loginController,
   authController,
+  getInputData,
 };
