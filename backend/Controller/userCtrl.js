@@ -145,7 +145,32 @@ const getInputData = async (req, res) => {
   }
 };
 
-module.exports = authController;
+// send input data and date
+const getData = async (req, res) => {
+  const { user } = req.body;
+  try {
+    const inputid = user._id;
+    const inputData = await dataModel.find({ id: inputid }); // Correct model and field name
+
+    if (inputData.length === 0) {
+      return res.status(200).send({
+        message: "No Data Found",
+        success: false,
+      });
+    }
+    res.status(200).send({
+      message: "Data Fetched Successfully",
+      success: true,
+      data: inputData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error while fetching user data",
+      success: false,
+    });
+  }
+};
 
 module.exports = {
   helloController,
@@ -153,4 +178,5 @@ module.exports = {
   loginController,
   authController,
   getInputData,
+  getData,
 };

@@ -5,6 +5,7 @@ const {
   loginController,
   authController,
   getInputData,
+  getData,
 } = require("../Controller/userCtrl");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -18,5 +19,7 @@ router.post("/login", loginController);
 router.post("/getUserdata", authMiddleware, authController);
 
 router.post("/getInputData", authMiddleware, getInputData);
+
+router.post("/getData", authMiddleware, getData);
 
 module.exports = router;
