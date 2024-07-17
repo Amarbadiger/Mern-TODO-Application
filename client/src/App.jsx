@@ -39,9 +39,9 @@ function App() {
         <Route
           path="/allPost"
           element={
-            <PublicRoute>
+            <ProtectedRoute>
               <AllPost />
-            </PublicRoute>
+            </ProtectedRoute>
           }
         />
         <Route

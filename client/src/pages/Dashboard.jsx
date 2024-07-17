@@ -3,6 +3,7 @@ import Input from "../components/Input.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/userSlice.js";
 import Navbar from "../components/Navbar.jsx";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [error, setError] = useState(null);
@@ -56,6 +57,11 @@ const Dashboard = () => {
             </>
           )}
           <Input />
+          <div className="view_post">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-4 rounded focus:outline-none focus:shadow-outline">
+              <Link to="/allPost">View Post</Link>
+            </button>
+          </div>
         </div>
       </div>
     </>
