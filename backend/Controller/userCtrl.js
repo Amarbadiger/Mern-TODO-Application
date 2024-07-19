@@ -8,11 +8,12 @@ const helloController = async (req, res) => {
 
 const registerController = async (req, res) => {
   try {
-    //Frist Check for existing User Weather User is Exiting or no
+    // First check if the user already exists
     const user = await userModel.findOne({ email: req.body.email });
+
     // If user exists, return a response indicating the user already exists
     if (user) {
-      res.status(200).send({
+      return res.status(409).send({
         message: "User already exists",
         success: false,
       });
@@ -28,8 +29,8 @@ const registerController = async (req, res) => {
     const newUser = new userModel(req.body);
     await newUser.save();
 
-    // Send a successfully registering message
-    res.status(200).send({
+    // Send a successful registration message
+    res.status(201).send({
       message: "Registration successful !!",
       success: true,
     });
@@ -48,13 +49,13 @@ const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    //Find a User using email
+    // Find a User using email
     const user = await userModel.findOne({ email: email });
 
-    // check if the user present or no
+    // Check if the user is present
     if (!user) {
       // If user not found, return a response indicating user not found
-      return res.status(200).send({
+      return res.status(401).send({
         message: "User Not Found",
         success: false,
       });
@@ -62,10 +63,11 @@ const loginController = async (req, res) => {
 
     // Compare the password with hashed password
     const isMatch = await bcrypt.compare(password, user.password);
-    //check if the password is correct of no
+
+    // Check if the password is correct
     if (!isMatch) {
-      return res.status(200).send({
-        message: "Invaild user or Password",
+      return res.status(401).send({
+        message: "Invalid Username or Password",
         success: false,
       });
     }
@@ -75,7 +77,7 @@ const loginController = async (req, res) => {
     });
 
     res.status(200).send({
-      message: "User Logined",
+      message: "User Logged In",
       success: true,
       token,
     });
